@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 class AutoSyntheticApp(ZApplication):
-    TASK_HIFI_MASTER = '母盘合成'
+    TASK_HIFI_MASTER = "母盘合成"
 
     def __init__(self, ctx: ZContext) -> None:
         ZApplication.__init__(
@@ -37,7 +37,7 @@ class AutoSyntheticApp(ZApplication):
         self._task_queue: list[str] = []
         self.current_task_index: int = 0
 
-    @operation_node(name='检查配置', is_start_node=True)
+    @operation_node(name="检查配置", is_start_node=True)
     def check_config(self) -> OperationRoundResult:
         """检查配置，构建任务队列"""
         self._task_queue = []
@@ -46,7 +46,7 @@ class AutoSyntheticApp(ZApplication):
             self._task_queue.append(self.TASK_HIFI_MASTER)
 
         if not self._task_queue:
-            return self.round_success(status='无任务')
+            return self.round_success(status="无任务")
 
         self.current_task_index = 0
 
@@ -55,7 +55,7 @@ class AutoSyntheticApp(ZApplication):
     def _get_next_task_status(self) -> OperationRoundResult:
         """获取下一个任务的状态"""
         if self.current_task_index >= len(self._task_queue):
-            return self.round_success(status='全部完成')
+            return self.round_success(status="全部完成")
 
         current_task = self._task_queue[self.current_task_index]
 
@@ -63,8 +63,8 @@ class AutoSyntheticApp(ZApplication):
 
     # ==================== 母盘合成节点 ====================
 
-    @node_from(from_name='检查配置', status='母盘合成')
-    @operation_node(name='母盘合成')
+    @node_from(from_name="检查配置", status="母盘合成")
+    @operation_node(name="母盘合成")
     def hifi_master(self) -> OperationRoundResult:
         """执行母盘合成操作"""
         op = HifiMasterSynthesisOp(self.ctx)
@@ -77,14 +77,15 @@ class AutoSyntheticApp(ZApplication):
 
     # ==================== 完成节点 ====================
 
-    @node_from(from_name='检查配置', status='全部完成')
-    @node_from(from_name='检查配置', status='无任务')
-    @node_from(from_name='母盘合成', status='全部完成')
-    @operation_node(name='最终返回')
+    @node_from(from_name="检查配置", status="全部完成")
+    @node_from(from_name="检查配置", status="无任务")
+    @node_from(from_name="母盘合成", status="全部完成")
+    @operation_node(name="最终返回")
     def final_return(self) -> OperationRoundResult:
         """最终返回大世界"""
         op = BackToNormalWorld(self.ctx)
         return self.round_by_op_result(op.execute())
+
 
 def __debug() -> None:
     from zzz_od.context.zzz_context import ZContext
@@ -96,5 +97,5 @@ def __debug() -> None:
     app.execute()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     __debug()

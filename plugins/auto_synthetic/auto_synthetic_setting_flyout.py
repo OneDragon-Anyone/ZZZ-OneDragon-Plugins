@@ -10,10 +10,11 @@ from .auto_synthetic_config import AutoSyntheticConfig
 
 
 class AutoSyntheticSettingFlyout(AppSettingFlyout):
-
     def _setup_ui(self, layout) -> None:
 
-        self.auto_synthetic_hifi_master_copy = SwitchSettingCard(icon=FluentIcon.GAME, title='高保真母盘')
+        self.auto_synthetic_hifi_master_copy = SwitchSettingCard(
+            icon=FluentIcon.GAME, title="高保真母盘"
+        )
         layout.addWidget(self.auto_synthetic_hifi_master_copy)
 
     def init_config(self) -> None:
@@ -22,4 +23,6 @@ class AutoSyntheticSettingFlyout(AppSettingFlyout):
             instance_idx=self.ctx.current_instance_idx,
             group_id=self.group_id,
         )
-        self.auto_synthetic_hifi_master_copy.init_with_adapter(get_prop_adapter(config, 'hifi_master_copy'))
+        self.auto_synthetic_hifi_master_copy.init_with_adapter(
+            get_prop_adapter(config, "hifi_master_copy")
+        )

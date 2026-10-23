@@ -30,13 +30,8 @@ class AutoSyntheticAppFactory(ApplicationFactory):
     def create_application(self, instance_idx: int, group_id: str) -> Application:
         return AutoSyntheticApp(self.ctx)
 
-    def create_config(
-        self, instance_idx: int, group_id: str
-    ) -> ApplicationConfig:
-        return AutoSyntheticConfig(
-            instance_idx=instance_idx,
-            group_id=group_id
-        )
+    def create_config(self, instance_idx: int, group_id: str) -> ApplicationConfig:
+        return AutoSyntheticConfig(instance_idx=instance_idx, group_id=group_id)
 
     def create_run_record(self, instance_idx: int) -> AppRunRecord:
         return AutoSyntheticRunRecord(
