@@ -6,6 +6,7 @@ from one_dragon.base.operation.application.application_config import Application
 from one_dragon.base.operation.application.application_factory import ApplicationFactory
 from one_dragon.base.operation.application_base import Application
 from one_dragon.base.operation.application_run_record import AppRunRecord
+
 from . import auto_synthetic_const
 from .auto_synthetic_app import AutoSyntheticApp
 from .auto_synthetic_config import AutoSyntheticConfig
@@ -29,13 +30,8 @@ class AutoSyntheticAppFactory(ApplicationFactory):
     def create_application(self, instance_idx: int, group_id: str) -> Application:
         return AutoSyntheticApp(self.ctx)
 
-    def create_config(
-        self, instance_idx: int, group_id: str
-    ) -> ApplicationConfig:
-        return AutoSyntheticConfig(
-            instance_idx=instance_idx,
-            group_id=group_id
-        )
+    def create_config(self, instance_idx: int, group_id: str) -> ApplicationConfig:
+        return AutoSyntheticConfig(instance_idx=instance_idx, group_id=group_id)
 
     def create_run_record(self, instance_idx: int) -> AppRunRecord:
         return AutoSyntheticRunRecord(
