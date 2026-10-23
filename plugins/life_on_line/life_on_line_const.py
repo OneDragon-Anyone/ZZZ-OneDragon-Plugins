@@ -8,4 +8,4 @@ NEED_NOTIFY = True
 PLUGIN_AUTHOR = "DoctorReid（原内置应用）/ idk500（插件化适配）"
 PLUGIN_HOMEPAGE = "https://github.com/idk500/ZZZ-OneDragon-Plugins"
 PLUGIN_VERSION = "1.0.0"
-PLUGIN_DESCRIPTION = "第二章间章的 HDD 战斗委托「真·拿命验收」：可重复挑战，用于推进/跳过游戏时间（过夜）"
+PLUGIN_DESCRIPTION = "第二章间章的 HDD 战斗委托「真·拿命验收」：可重复挑战，用于推进/跳过游戏时间（过夜）。编队需 1 号位妮可、2 号位比利（按键脚本按此配队录制）"
