@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from qfluentwidgets import FluentIcon
-
 from one_dragon_qt.utils.config_utils import get_prop_adapter
 from one_dragon_qt.widgets.app_setting.app_setting_flyout import AppSettingFlyout
 from one_dragon_qt.widgets.setting_card.switch_setting_card import SwitchSettingCard
+from qfluentwidgets import FluentIcon
+
 from . import auto_synthetic_const
 from .auto_synthetic_config import AutoSyntheticConfig
 

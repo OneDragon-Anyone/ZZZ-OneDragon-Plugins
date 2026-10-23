@@ -16,6 +16,7 @@ from .operations.outpost_logistics_operation import OutpostLogisticsOperation
 
 if TYPE_CHECKING:
     from zzz_od.context.zzz_context import ZContext
+
     from .auto_obtain_prepaid_power_card_config import AutoObtainPrepaidPowerCardConfig
 
 class AutoObtainPrepaidPowerCardApp(ZApplication):

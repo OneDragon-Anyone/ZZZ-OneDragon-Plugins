@@ -8,11 +8,13 @@ from one_dragon.base.operation.operation_node import operation_node
 from one_dragon.base.operation.operation_round_result import OperationRoundResult
 from zzz_od.application.zzz_application import ZApplication
 from zzz_od.operation.back_to_normal_world import BackToNormalWorld
+
 from . import auto_synthetic_const
 from .operations.hifi_master_synthesis_op import HifiMasterSynthesisOp
 
 if TYPE_CHECKING:
     from zzz_od.context.zzz_context import ZContext
+
     from .auto_synthetic_config import AutoSyntheticConfig
 
 

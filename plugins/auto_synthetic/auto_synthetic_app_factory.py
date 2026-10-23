@@ -6,6 +6,7 @@ from one_dragon.base.operation.application.application_config import Application
 from one_dragon.base.operation.application.application_factory import ApplicationFactory
 from one_dragon.base.operation.application_base import Application
 from one_dragon.base.operation.application_run_record import AppRunRecord
+
 from . import auto_synthetic_const
 from .auto_synthetic_app import AutoSyntheticApp
 from .auto_synthetic_config import AutoSyntheticConfig

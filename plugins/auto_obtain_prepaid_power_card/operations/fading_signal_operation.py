@@ -15,8 +15,10 @@ from zzz_od.operation.goto.goto_menu import GotoMenu
 from zzz_od.operation.zzz_operation import ZOperation
 
 if TYPE_CHECKING:
+    from auto_obtain_prepaid_power_card.auto_obtain_prepaid_power_card_config import (
+        AutoObtainPrepaidPowerCardConfig,
+    )
     from zzz_od.context.zzz_context import ZContext
-    from ..auto_obtain_prepaid_power_card_config import AutoObtainPrepaidPowerCardConfig
 
 
 class FadingSignalOperation(ZOperation):
