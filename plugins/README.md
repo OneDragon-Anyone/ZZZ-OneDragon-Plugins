@@ -65,7 +65,7 @@ plugins/                          # ← 添加到 sys.path
 APP_ID = "my_plugin"
 APP_NAME = "我的插件"
 DEFAULT_GROUP = True  # True: 显示在一条龙列表，False: 独立工具
-NEED_NOTIFY = True    # 是否需要通知
+NEED_NOTIFY = True  # 是否需要通知
 
 # 插件元数据（可选，用于 GUI 显示）
 PLUGIN_AUTHOR = "作者名"
@@ -84,8 +84,8 @@ PLUGIN_DESCRIPTION = "插件功能描述"
 from one_dragon.base.operation.application.application_factory import ApplicationFactory
 from zzz_od.context.zzz_context import ZContext  # ✅ 导入主程序模块
 
-from . import my_plugin_const      # ✅ 相对导入
-from .my_plugin import MyPlugin    # ✅ 相对导入
+from . import my_plugin_const  # ✅ 相对导入
+from .my_plugin import MyPlugin  # ✅ 相对导入
 
 
 class MyPluginFactory(ApplicationFactory):
