@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout
-
 from one_dragon.base.config.config_item import ConfigItem
 from one_dragon_qt.utils.config_utils import get_prop_adapter
 from one_dragon_qt.widgets.app_setting.app_setting_flyout import AppSettingFlyout
@@ -10,6 +8,7 @@ from one_dragon_qt.widgets.setting_card.combo_box_setting_card import (
 )
 from one_dragon_qt.widgets.setting_card.setting_card_base import SettingCardBase
 from one_dragon_qt.widgets.setting_card.spin_box_setting_card import SpinBoxSettingCard
+from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from . import life_on_line_const
 
