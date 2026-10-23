@@ -32,14 +32,21 @@ class AutoObtainPrepaidPowerCardFactory(ApplicationFactory):
 
     def create_application(self, instance_idx: int, group_id: str):
         from .auto_obtain_prepaid_power_card_app import AutoObtainPrepaidPowerCardApp
+
         return AutoObtainPrepaidPowerCardApp(self.ctx)
 
     def create_config(self, instance_idx: int, group_id: str) -> ApplicationConfig:
-        from .auto_obtain_prepaid_power_card_config import AutoObtainPrepaidPowerCardConfig
+        from .auto_obtain_prepaid_power_card_config import (
+            AutoObtainPrepaidPowerCardConfig,
+        )
+
         return AutoObtainPrepaidPowerCardConfig(instance_idx, group_id)
 
     def create_run_record(self, instance_idx: int) -> AppRunRecord:
-        from .auto_obtain_prepaid_power_card_run_record import AutoObtainPrepaidPowerCardRunRecord
+        from .auto_obtain_prepaid_power_card_run_record import (
+            AutoObtainPrepaidPowerCardRunRecord,
+        )
+
         return AutoObtainPrepaidPowerCardRunRecord(
             instance_idx=instance_idx,
             game_refresh_hour_offset=self.ctx.game_account_config.game_refresh_hour_offset,
