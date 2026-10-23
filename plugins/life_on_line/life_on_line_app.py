@@ -25,13 +25,11 @@ from .life_on_line_run_record import LifeOnLineRunRecord
 
 
 class LifeOnLineApp(ZApplication):
-
     """真·拿命验收:第二章间章的 HDD 战斗委托,可重复挑战;主要用于推进/跳过游戏时间(过夜)。进入战斗、单次很快(默认按次数重复)。"""
 
-    STATUS_TIMES_FINISHED: ClassVar[str] = '完成指定次数'
-    STATUS_CONTINUE: ClassVar[str] = '继续'
-    STATUS_CONTINUE_OVER_NIGHT: ClassVar[str] = '过夜后继续'
-
+    STATUS_TIMES_FINISHED: ClassVar[str] = "完成指定次数"
+    STATUS_CONTINUE: ClassVar[str] = "继续"
+    STATUS_CONTINUE_OVER_NIGHT: ClassVar[str] = "过夜后继续"
 
     def __init__(self, ctx: ZContext):
         ZApplication.__init__(
@@ -56,29 +54,31 @@ class LifeOnLineApp(ZApplication):
     def _ensure_key_sim_sample(self) -> None:
         """插件化后官方主仓不再内置 key_sim 样例 把随包样例复制到用户配置目录 供 KeySimRunner 加载"""
         try:
-            sample_src = Path(__file__).parent / 'key_sim' / '真拿命验收.sample.yml'
-            sample_dst = os_utils.get_path_under_work_dir('config', 'key_sim', '真拿命验收.sample.yml')
+            sample_src = Path(__file__).parent / "key_sim" / "真拿命验收.sample.yml"
+            sample_dst = os_utils.get_path_under_work_dir(
+                "config", "key_sim", "真拿命验收.sample.yml"
+            )
             if sample_src.exists() and not os.path.exists(sample_dst):
                 shutil.copyfile(sample_src, sample_dst)
         except Exception:
-            log.error('复制真拿命验收 key_sim 样例失败', exc_info=True)
+            log.error("复制真拿命验收 key_sim 样例失败", exc_info=True)
 
-    @operation_node(name='传送', is_start_node=True)
+    @operation_node(name="传送", is_start_node=True)
     def tp(self) -> OperationRoundResult:
-        op = Transport(self.ctx, '录像店', 'HDD')
+        op = Transport(self.ctx, "录像店", "HDD")
         return self.round_by_op_result(op.execute())
 
-    @node_from(from_name='传送')
-    @operation_node(name='等待加载')
+    @node_from(from_name="传送")
+    @operation_node(name="等待加载")
     def wait_world(self) -> OperationRoundResult:
         op = WaitNormalWorld(self.ctx)
         return self.round_by_op_result(op.execute())
 
-    @node_from(from_name='等待加载')
-    @node_from(from_name='检查运行次数', status=STATUS_CONTINUE_OVER_NIGHT)
-    @operation_node(name='交互')
+    @node_from(from_name="等待加载")
+    @node_from(from_name="检查运行次数", status=STATUS_CONTINUE_OVER_NIGHT)
+    @operation_node(name="交互")
     def interact(self) -> OperationRoundResult:
-        result = self.round_by_find_area(self.last_screenshot, 'HDD', '街区')
+        result = self.round_by_find_area(self.last_screenshot, "HDD", "街区")
         if result.is_success:
             return self.round_success()
 
@@ -87,34 +87,36 @@ class LifeOnLineApp(ZApplication):
 
         return self.round_wait()
 
-    @node_from(from_name='交互')
-    @node_from(from_name='检查运行次数', status=STATUS_CONTINUE)
-    @operation_node(name='进入副本')
+    @node_from(from_name="交互")
+    @node_from(from_name="检查运行次数", status=STATUS_CONTINUE)
+    @operation_node(name="进入副本")
     def enter_mission(self) -> OperationRoundResult:
         target_team_idx: int = self.config.predefined_team_idx
         if self.chosen_team:  # 只需要选1次
             target_team_idx = -1
-        op = EnterHddMission(self.ctx, '第二章间章', '战斗委托', '作战真拿命验收',
-                             target_team_idx)
+        op = EnterHddMission(
+            self.ctx, "第二章间章", "战斗委托", "作战真拿命验收", target_team_idx
+        )
         return self.round_by_op_result(op.execute())
 
-    @node_from(from_name='进入副本')
-    @operation_node(name='等待战斗画面加载', node_max_retry_times=60)
+    @node_from(from_name="进入副本")
+    @operation_node(name="等待战斗画面加载", node_max_retry_times=60)
     def wait_battle_screen(self) -> OperationRoundResult:
         self.chosen_team = True
-        return self.round_by_find_area(self.last_screenshot, '战斗画面', '按键-普通攻击',
-                                       retry_wait=0.5)
+        return self.round_by_find_area(
+            self.last_screenshot, "战斗画面", "按键-普通攻击", retry_wait=0.5
+        )
 
-    @node_from(from_name='等待战斗画面加载')
-    @operation_node(name='模拟按键')
+    @node_from(from_name="等待战斗画面加载")
+    @operation_node(name="模拟按键")
     def run_key_sim(self) -> OperationRoundResult:
-        op = KeySimRunner(self.ctx, '真拿命验收')
+        op = KeySimRunner(self.ctx, "真拿命验收")
         return self.round_by_op_result(op.execute())
 
-    @node_from(from_name='模拟按键')
-    @operation_node(name='通关交互', node_max_retry_times=10)
+    @node_from(from_name="模拟按键")
+    @operation_node(name="通关交互", node_max_retry_times=10)
     def interact_after_mission(self) -> OperationRoundResult:
-        result = self.round_by_find_area(self.last_screenshot, '真拿命验收', '对话人')
+        result = self.round_by_find_area(self.last_screenshot, "真拿命验收", "对话人")
         if result.is_success:
             return self.round_success()
 
@@ -122,15 +124,17 @@ class LifeOnLineApp(ZApplication):
 
         return self.round_retry(wait=1)
 
-    @node_from(from_name='通关交互')
-    @operation_node(name='对话', node_max_retry_times=30)
+    @node_from(from_name="通关交互")
+    @operation_node(name="对话", node_max_retry_times=30)
     def talk_after_mission(self) -> OperationRoundResult:
-        result = self.round_by_find_area(self.last_screenshot, '战斗画面', '战斗结果-完成')
+        result = self.round_by_find_area(
+            self.last_screenshot, "战斗画面", "战斗结果-完成"
+        )
         if result.is_success:
             return self.round_success(wait=1)
 
         # 有选项就点选项
-        area = self.ctx.screen_loader.get_area('真拿命验收', '对话选项')
+        area = self.ctx.screen_loader.get_area("真拿命验收", "对话选项")
         ocr_result_map = self.ctx.ocr.crop_and_run_ocr(self.last_screenshot, area.rect)
         for ocr_result, mrl in ocr_result_map.items():
             to_click = mrl.max.center + area.left_top
@@ -138,21 +142,23 @@ class LifeOnLineApp(ZApplication):
             return self.round_wait(status=ocr_result, wait=1)
 
         # 一直点击到出现完成按钮
-        self.round_by_click_area('菜单', '返回')
+        self.round_by_click_area("菜单", "返回")
 
         return self.round_retry(wait=1)
 
-    @node_from(from_name='对话')
-    @operation_node(name='完成', node_max_retry_times=60)
+    @node_from(from_name="对话")
+    @operation_node(name="完成", node_max_retry_times=60)
     def click_finished(self) -> OperationRoundResult:
-        result = self.round_by_find_area(self.last_screenshot, 'HDD', '街区')
+        result = self.round_by_find_area(self.last_screenshot, "HDD", "街区")
         if result.is_success:
             self.is_over_night = False
             self.run_record.add_times()
             return self.round_success(result.status)
 
         # 一直点击直到出现街区
-        result = self.round_by_find_and_click_area(self.last_screenshot, '战斗画面', '战斗结果-完成')
+        result = self.round_by_find_and_click_area(
+            self.last_screenshot, "战斗画面", "战斗结果-完成"
+        )
         if result.is_success:
             return self.round_wait(result.status, wait=0.5)
 
@@ -164,13 +170,13 @@ class LifeOnLineApp(ZApplication):
             self.run_record.add_times()
             return self.round_success(result.status)
 
-        self.round_by_click_area('HDD', '空白')
+        self.round_by_click_area("HDD", "空白")
 
         return self.round_retry(result.status, wait=1)
 
-    @node_from(from_name='完成')
-    @node_from(from_name='点击退出战斗确认')
-    @operation_node(name='检查运行次数')
+    @node_from(from_name="完成")
+    @node_from(from_name="点击退出战斗确认")
+    @operation_node(name="检查运行次数")
     def check_times(self) -> OperationRoundResult:
         self.run_record.check_and_update_status()
         if self.run_record.is_finished_by_times():
@@ -181,37 +187,43 @@ class LifeOnLineApp(ZApplication):
             else:
                 return self.round_success(LifeOnLineApp.STATUS_CONTINUE)
 
-    @node_from(from_name='检查运行次数', status=STATUS_TIMES_FINISHED)
+    @node_from(from_name="检查运行次数", status=STATUS_TIMES_FINISHED)
     @node_notify(when=NotifyTiming.PREVIOUS_DONE)
-    @operation_node(name='返回大世界')
+    @operation_node(name="返回大世界")
     def back_to_world(self) -> OperationRoundResult:
         op = BackToNormalWorld(self.ctx)
         return self.round_by_op_result(op.execute())
 
-    @node_from(from_name='通关交互', success=False)
-    @operation_node(name='交互失败')
+    @node_from(from_name="通关交互", success=False)
+    @operation_node(name="交互失败")
     def fail_to_interact(self) -> OperationRoundResult:
-        result = self.round_by_find_area(self.last_screenshot, '恶名狩猎', '退出战斗')
+        result = self.round_by_find_area(self.last_screenshot, "恶名狩猎", "退出战斗")
         if result.is_success:
             return self.round_success(wait=1)  # 稍微等一下让按钮可按
 
-        result = self.round_by_click_area('战斗画面', '菜单')
+        result = self.round_by_click_area("战斗画面", "菜单")
         if result.is_success:
             return self.round_wait(result.status, wait=2)
         else:
             return self.round_fail(result.status)
 
-    @node_from(from_name='交互失败')
-    @operation_node(name='点击退出战斗')
+    @node_from(from_name="交互失败")
+    @operation_node(name="点击退出战斗")
     def click_exit_battle(self) -> OperationRoundResult:
-        return self.round_by_find_and_click_area(self.last_screenshot, '恶名狩猎', '退出战斗',
-                                                 success_wait=1, retry_wait=1)
+        return self.round_by_find_and_click_area(
+            self.last_screenshot, "恶名狩猎", "退出战斗", success_wait=1, retry_wait=1
+        )
 
-    @node_from(from_name='点击退出战斗')
-    @operation_node(name='点击退出战斗确认')
+    @node_from(from_name="点击退出战斗")
+    @operation_node(name="点击退出战斗确认")
     def click_exit_battle_confirm(self) -> OperationRoundResult:
-        return self.round_by_find_and_click_area(self.last_screenshot, '恶名狩猎', '退出战斗-确认',
-                                                 success_wait=5, retry_wait=1)
+        return self.round_by_find_and_click_area(
+            self.last_screenshot,
+            "恶名狩猎",
+            "退出战斗-确认",
+            success_wait=5,
+            retry_wait=1,
+        )
 
 
 def __debug():
@@ -221,5 +233,6 @@ def __debug():
     app = LifeOnLineApp(ctx)
     app.execute()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     __debug()

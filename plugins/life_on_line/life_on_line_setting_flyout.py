@@ -18,14 +18,18 @@ class LifeOnLineSettingFlyout(AppSettingFlyout):
 
     def _setup_ui(self, layout: QVBoxLayout) -> None:
         self.times_opt = SpinBoxSettingCard(
-            icon='', title='每日次数',
-            minimum=0, maximum=20000,
+            icon="",
+            title="每日次数",
+            minimum=0,
+            maximum=20000,
             margins=self.card_margins,
         )
         layout.addWidget(self.times_opt)
 
-        self.done_title = SettingCardBase(icon='', title='完成次数', margins=self.card_margins)
-        self.done_value = SettingCardBase(icon='', title='', margins=self.card_margins)
+        self.done_title = SettingCardBase(
+            icon="", title="完成次数", margins=self.card_margins
+        )
+        self.done_value = SettingCardBase(icon="", title="", margins=self.card_margins)
 
         done_row = QHBoxLayout()
         done_row.setSpacing(8)
@@ -34,7 +38,8 @@ class LifeOnLineSettingFlyout(AppSettingFlyout):
         layout.addLayout(done_row)
 
         self.team_opt = ComboBoxSettingCard(
-            icon='', title='预备编队',
+            icon="",
+            title="预备编队",
             margins=self.card_margins,
         )
         layout.addWidget(self.team_opt)
@@ -50,10 +55,11 @@ class LifeOnLineSettingFlyout(AppSettingFlyout):
             app_id=life_on_line_const.APP_ID,
         )
 
-        self.times_opt.init_with_adapter(get_prop_adapter(config, 'daily_plan_times'))
-        self.done_value.titleLabel.setText(f'当日: {run_record.daily_run_times}')
+        self.times_opt.init_with_adapter(get_prop_adapter(config, "daily_plan_times"))
+        self.done_value.titleLabel.setText(f"当日: {run_record.daily_run_times}")
 
-        team_list = ([ConfigItem('游戏内配队', -1)] +
-                     [ConfigItem(team.name, team.idx) for team in self.ctx.team_config.team_list])
+        team_list = [ConfigItem("游戏内配队", -1)] + [
+            ConfigItem(team.name, team.idx) for team in self.ctx.team_config.team_list
+        ]
         self.team_opt.set_options_by_list(team_list)
-        self.team_opt.init_with_adapter(get_prop_adapter(config, 'predefined_team_idx'))
+        self.team_opt.init_with_adapter(get_prop_adapter(config, "predefined_team_idx"))

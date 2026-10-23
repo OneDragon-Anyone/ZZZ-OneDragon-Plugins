@@ -1,18 +1,20 @@
-
 from one_dragon.base.operation.application_run_record import AppRunRecord
 
 from .life_on_line_config import LifeOnLineConfig
 
 
 class LifeOnLineRunRecord(AppRunRecord):
-
-    def __init__(self, config: LifeOnLineConfig,
-                 instance_idx: int | None = None, game_refresh_hour_offset: int = 0):
+    def __init__(
+        self,
+        config: LifeOnLineConfig,
+        instance_idx: int | None = None,
+        game_refresh_hour_offset: int = 0,
+    ):
         AppRunRecord.__init__(
             self,
-            'life_on_line',
+            "life_on_line",
             instance_idx=instance_idx,
-            game_refresh_hour_offset=game_refresh_hour_offset
+            game_refresh_hour_offset=game_refresh_hour_offset,
         )
 
         self.config: LifeOnLineConfig = config
@@ -23,11 +25,11 @@ class LifeOnLineRunRecord(AppRunRecord):
 
     @property
     def daily_run_times(self) -> int:
-        return self.get('daily_run_times', 0)
+        return self.get("daily_run_times", 0)
 
     @daily_run_times.setter
     def daily_run_times(self, new_value: int) -> None:
-        self.update('daily_run_times', new_value)
+        self.update("daily_run_times", new_value)
 
     def add_times(self) -> None:
         """

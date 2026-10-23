@@ -18,7 +18,6 @@ if TYPE_CHECKING:
 
 
 class LifeOneLineAppFactory(ApplicationFactory):
-
     def __init__(self, ctx: ZContext):
         ApplicationFactory.__init__(self, life_on_line_const)
         self.ctx: ZContext = ctx
@@ -26,9 +25,7 @@ class LifeOneLineAppFactory(ApplicationFactory):
     def create_application(self, instance_idx: int, group_id: str) -> Application:
         return LifeOnLineApp(self.ctx)
 
-    def create_config(
-        self, instance_idx: int, group_id: str
-    ) -> ApplicationConfig:
+    def create_config(self, instance_idx: int, group_id: str) -> ApplicationConfig:
         return LifeOnLineConfig(
             instance_idx=instance_idx,
             group_id=group_id,
@@ -36,10 +33,13 @@ class LifeOneLineAppFactory(ApplicationFactory):
 
     def create_run_record(self, instance_idx: int) -> AppRunRecord:
         return LifeOnLineRunRecord(
-            config=cast(LifeOnLineConfig, self.get_config(
-                instance_idx=instance_idx,
-                group_id=application_const.DEFAULT_GROUP_ID
-            )),
+            config=cast(
+                LifeOnLineConfig,
+                self.get_config(
+                    instance_idx=instance_idx,
+                    group_id=application_const.DEFAULT_GROUP_ID,
+                ),
+            ),
             instance_idx=instance_idx,
             game_refresh_hour_offset=self.ctx.game_account_config.game_refresh_hour_offset,
         )
