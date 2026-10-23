@@ -35,7 +35,6 @@ class LifeOnLineSettingFlyout(AppSettingFlyout):
 
         self.team_opt = ComboBoxSettingCard(
             icon='', title='预备编队',
-            content='需 1 号位妮可、2 号位比利（按键脚本按此配队录制，其他配队会卡住）',
             margins=self.card_margins,
         )
         layout.addWidget(self.team_opt)
